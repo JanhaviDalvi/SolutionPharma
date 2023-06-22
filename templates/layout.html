@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Medical Shop Software</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+
+    <script>
+        function addMedicine() {
+            console.log("add pressed!")
+            // Get the selected medicine name and quantity
+            var medicineName = document.getElementById('productName').value;
+            var quantity = document.getElementById('productQuantity').value;
+
+            // Get the medicine object from the selected option
+            var selectedMedicine = Array.from(document.getElementById('productName').options)
+                .find(option => option.value === medicineName);
+
+            // Get the price from the selected medicine object
+            var price = selectedMedicine.dataset.price;
+
+            // Calculate the total cost
+            var totalCost = quantity * price;
+
+            // Create a new table row
+            var row = document.createElement('tr');
+
+            // Add the medicine name, quantity, price, and total cost to the table row
+            row.innerHTML = `
+                <td>${medicineName}</td>
+                <td>${quantity}</td>
+                <td>${price}</td>
+                <td>${totalCost}</td>
+            `;
+
+            // Append the new row to the table body
+            document.getElementById('medicine-table-body').appendChild(row);
+        }
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"
+        integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
