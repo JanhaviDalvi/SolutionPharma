@@ -22,6 +22,12 @@ def sales():
         print(i)
     return render_template('sales.html', medicines=medicines)
 
+@app.route('/billing', methods=["POST"])
+def billing():
+    data = request.form.get('medicine_name')
+    print(data)
+    return "hii"
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':

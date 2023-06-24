@@ -10,7 +10,7 @@
     <!-- put content here -->
     <div class="container p-4">
         <h1>Order Form</h1>
-        <form class="form-inline">
+        <form class="form-inline" action="{{ url_for('billing') }}" method="post">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -49,29 +49,30 @@
                     <button type="button" class="btn btn-primary" onclick="addMedicine()">Add</button>
                 </div>
             </div>
+        
+            <!-- medicine table -->
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Medicine Name</th>
+                        <th>Quantity</th>
+                        <th>Per Unit Price(₹)</th>
+                        <th>Total Medicine Cost(₹)</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="medicine-table-body">
+                    <!-- Table rows will be dynamically added here -->
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="3">Total Cost(₹):</th>
+                        <th colspan="2" id="total-cost">0</th>
+                    </tr>
+                </tfoot>
+            </table>
+            <button type="submit" class="btn btn-sm btn-success btn-success">Confirm</button>
         </form>
-        <!-- medicine table -->
-        <table class="table table-striped">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Medicine Name</th>
-                    <th>Quantity</th>
-                    <th>Per Unit Price(₹)</th>
-                    <th>Total Medicine Cost(₹)</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="medicine-table-body">
-                <!-- Table rows will be dynamically added here -->
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th colspan="3">Total Cost(₹):</th>
-                    <th colspan="2" id="total-cost">0</th>
-                </tr>
-            </tfoot>
-        </table>
-
     </div>
 </div>
 

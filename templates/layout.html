@@ -47,10 +47,10 @@
             var row = document.createElement('tr');
             // Add the medicine name, quantity, price, and total cost to the table row
             row.innerHTML = `
-                <td>${medicine_name}</td>
-                <td>${quantity}</td>
-                <td>${medicine_price}</td>
-                <td>${totalCost}</td>
+                <td name='medicine_name'>${medicine_name}</td>
+                <td name='medicine_quantity'>${quantity}</td>
+                <td name='medicine_price'>${medicine_price}</td>
+                <td name='medicine_totalCost'>${totalCost}</td>
                 <td><button class="btn btn-danger btn-sm delete-btn">Delete</button></td>
             `;
             // Append the new row to the table body
