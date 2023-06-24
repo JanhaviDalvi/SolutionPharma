@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,37 +17,55 @@
     </div>
 
     <script>
+        function calculateTotalCost() {
+            var total = 0;
+            var totalCostElements = document.querySelectorAll('#medicine-table-body td:nth-child(4)');
+
+            totalCostElements.forEach(function (element) {
+                var cost = parseFloat(element.textContent);
+                if (!isNaN(cost)) {
+                    total += cost;
+                }
+            });
+
+            var totalCostElement = document.getElementById('total-cost');
+            totalCostElement.textContent = total.toFixed(2);
+        }
+
         function addMedicine() {
             console.log("add pressed!")
             // Get the selected medicine name and quantity
-            var medicineName = document.getElementById('productName').value;
-            var quantity = document.getElementById('productQuantity').value;
-
-            // Get the medicine object from the selected option
-            var selectedMedicine = Array.from(document.getElementById('productName').options)
-                .find(option => option.value === medicineName);
-
-            // Get the price from the selected medicine object
-            var price = selectedMedicine.dataset.price;
+            var name_price = document.getElementById('productName').value;
+            name_price = name_price.split(',');
+            var medicine_name = name_price[0];
+            var medicine_price = parseFloat(name_price[1]);
+            var quantity = parseFloat(document.getElementById('productQuantity').value);
 
             // Calculate the total cost
-            var totalCost = quantity * price;
-
+            var totalCost = quantity * medicine_price;
             // Create a new table row
             var row = document.createElement('tr');
-
             // Add the medicine name, quantity, price, and total cost to the table row
             row.innerHTML = `
-                <td>${medicineName}</td>
+                <td>${medicine_name}</td>
                 <td>${quantity}</td>
-                <td>${price}</td>
+                <td>${medicine_price}</td>
                 <td>${totalCost}</td>
+                <td><button class="btn btn-danger btn-sm delete-btn">Delete</button></td>
             `;
-
             // Append the new row to the table body
             document.getElementById('medicine-table-body').appendChild(row);
-        }
 
+            // Attach a click event listener to the delete button
+            var deleteButton = row.querySelector('.delete-btn');
+            deleteButton.addEventListener('click', function() {
+                // Find the closest <tr> element (row) and remove it
+                var row = this.closest('tr');
+                row.remove();
+                calculateTotalCost();
+            });
+            calculateTotalCost();
+        }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -57,5 +74,4 @@
         integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS"
         crossorigin="anonymous"></script>
 </body>
-
 </html>
