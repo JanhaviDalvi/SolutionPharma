@@ -4,69 +4,38 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Medical Shop Software</title>
+    <!-- Bootstrap styles -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <!-- bootstrap Icon link -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">    
+    <!-- custom styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 
 <body>
     <div class="container-fluid">
+        <!-- to get flashed messages -->
+		<div id="flash_div">
+			{% with messages = get_flashed_messages(with_categories=true) %}  <!--method provided by Flask's flash module. -->
+				{% if messages %}
+					{% for category, message in messages %}
+						<div class="alert alert-{{ category }}">
+							{{ message }}
+						</div>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
+		</div>
         <div class="row flex-nowrap">
             {% block content %}
             {% endblock %}
         </div>
     </div>
 
-    <script>
-        function calculateTotalCost() {
-            var total = 0;
-            var totalCostElements = document.querySelectorAll('#medicine-table-body td:nth-child(4)');
-
-            totalCostElements.forEach(function (element) {
-                var cost = parseFloat(element.textContent);
-                if (!isNaN(cost)) {
-                    total += cost;
-                }
-            });
-
-            var totalCostElement = document.getElementById('total-cost');
-            totalCostElement.textContent = total.toFixed(2);
-        }
-
-        function addMedicine() {
-            console.log("add pressed!")
-            // Get the selected medicine name and quantity
-            var name_price = document.getElementById('productName').value;
-            name_price = name_price.split(',');
-            var medicine_name = name_price[0];
-            var medicine_price = parseFloat(name_price[1]);
-            var quantity = parseFloat(document.getElementById('productQuantity').value);
-
-            // Calculate the total cost
-            var totalCost = quantity * medicine_price;
-            // Create a new table row
-            var row = document.createElement('tr');
-            // Add the medicine name, quantity, price, and total cost to the table row
-            row.innerHTML = `
-                <td name='medicine_name'>${medicine_name}</td>
-                <td name='medicine_quantity'>${quantity}</td>
-                <td name='medicine_price'>${medicine_price}</td>
-                <td name='medicine_totalCost'>${totalCost}</td>
-                <td><button class="btn btn-danger btn-sm delete-btn">Delete</button></td>
-            `;
-            // Append the new row to the table body
-            document.getElementById('medicine-table-body').appendChild(row);
-
-            // Attach a click event listener to the delete button
-            var deleteButton = row.querySelector('.delete-btn');
-            deleteButton.addEventListener('click', function() {
-                // Find the closest <tr> element (row) and remove it
-                var row = this.closest('tr');
-                row.remove();
-                calculateTotalCost();
-            });
-            calculateTotalCost();
-        }
-    </script>
+    <!-- custom js -->
+    <script src="{{ url_for('static', filename = 'js/script.js') }}"></script>
+    <!-- bootstrap js -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
         crossorigin="anonymous"></script>

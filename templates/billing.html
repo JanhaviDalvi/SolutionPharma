@@ -1,0 +1,61 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<!-- sidebar column here -->
+{% include 'sidebar.html' %}
+
+<!-- show content column here -->
+<div class="col py-3">
+    <!-- put content here -->
+    <div class="billing-receipt" id="billing-receipt">
+        <div class="invoice-header">
+            <h2>Invoice</h2>
+            <div class="invoice-info">
+                <p>Date: {{ billing_date.strftime("%d/%m/%Y %H:%M") }}</p>
+                <p>Invoice #: </p>
+            </div>
+        </div>
+        <div class="invoice-details">
+            <div class="invoice-address">
+                <h4>Medical Shop Name</h4>
+                <p>Address: Your Shop Address</p>
+                <p>Contact: Your Contact Info</p>
+            </div>
+            <div class="customer-address">
+                <h4>Customer Details</h4>
+                <p>Name: {{ customer_name }}</p>
+                <p>Payment method: {{ payment_method }}</p>
+            </div>
+        </div>
+        <table class="invoice-items">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for medicine in medicines %}
+                <tr>
+                    <td>{{ medicine.medicine_name }}</td>
+                    <td>{{ medicine.medicine_quantity }}</td>
+                    <td>{{ medicine.medicine_price }}</td>
+                    <td>{{ medicine.medicine_total_cost }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="invoice-total">
+            <p>Total Amount: {{ total_amount }}</p>
+        </div>
+        <div class="invoice-footer">
+            <p>Thank you for your purchase!</p>
+        </div>
+    </div>
+    <button class="btn btn-primary" onclick="printReceipt()">Print</button>
+</div>
+
+{% endblock %}

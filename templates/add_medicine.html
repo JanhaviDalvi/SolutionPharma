@@ -1,0 +1,84 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<!-- sidebar column here -->
+{% include 'sidebar.html' %}
+
+<!-- show content column here -->
+<div class="col py-3">
+	<!-- put content here -->
+	<div class="container p-4">
+		<h1>Add Medicine</h1>
+		<form action="{{ url_for('add_medicine') }}" method="post">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="mb-3">
+						<label for="medicineName" class="form-label">Medicine Name</label>
+						<input type="text" class="form-control" id="medicineName" name="medicine_name" placeholder="Enter medicine name" required>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="mb-3">
+						<label for="medicine_type" class="form-label">Medicine Type</label>
+						<select id="medicine_type" class="form-select" aria-label="select" name="medicine_type">
+							<option selected disabled>Select medicine type</option>
+							<option value="Tablet">Tablet</option>
+							<option value="Capsule">Capsule</option>
+							<option value="Cream">Cream</option>
+							<option value="Syrup">Syrup</option>
+							<option value="Injection">Injection</option>
+							<option value="Spray">Spray</option>
+							<option value="Drops">Drops</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="mb-3">
+						<label for="medicineDescription" class="form-label">Medicine Description</label>
+						<textarea class="form-control" id="medicineDescription" name="medicine_description" placeholder="Enter medicine description" required></textarea>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="mb-3">
+						<label for="stockCount" class="form-label">Stock Count</label>
+						<input type="number" class="form-control" id="stockCount" name="stock_count" min="0" required>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="mb-3">
+						<label for="medicineMfgDate" class="form-label">Manufacturing Date</label>
+						<input type="date" class="form-control" id="medicineMfgDate" name="medicine_mfg" max="{{ current_datetime.strftime('%Y-%m-%d') }}" required>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="mb-3">
+						<label for="medicineExpDate" class="form-label">Expiry Date</label>
+						<input type="date" class="form-control" id="medicineExpDate" name="medicine_exp" min="{{ current_datetime.strftime('%Y-%m-%d') }}" required>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="mb-3">
+						<label for="medicineCompany" class="form-label">Manufacturing Company</label>
+						<input type="text" class="form-control" id="medicineCompany" name="medicine_company" required>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="mb-3">
+						<label for="medicinePrice" class="form-label">Medicine Price</label>
+						<input type="text" class="form-control" id="medicinePrice" name="medicine_price" required>
+					</div>
+				</div>
+			</div>
+			<button type="submit" class="btn btn-primary">Add Medicine</button>
+		</form>
+	</div>
+</div>
+
+{% endblock %}

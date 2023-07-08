@@ -1,0 +1,64 @@
+.billing-receipt {
+    background-color: #f4f4f4;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.invoice-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.invoice-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.invoice-details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.invoice-address,
+.customer-address {
+    width: 48%;
+}
+
+.invoice-address h4,
+.customer-address h4 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.invoice-items {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.invoice-items th,
+.invoice-items td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.invoice-items th {
+    background-color: #f9f9f9;
+    text-align: left;
+    font-weight: bold;
+}
+
+.invoice-total {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.invoice-footer {
+    margin-top: 40px;
+    text-align: center;
+    color: #888;
+}
