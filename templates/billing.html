@@ -13,7 +13,7 @@
             <h2>Invoice</h2>
             <div class="invoice-info">
                 <p>Date: {{ billing_date.strftime("%d/%m/%Y %H:%M") }}</p>
-                <p>Invoice #: </p>
+                <p>Amount Paid(₹): {{ amount_paid }}</p>
             </div>
         </div>
         <div class="invoice-details">
@@ -47,15 +47,20 @@
                 </tr>
                 {% endfor %}
             </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="3">Total Amount(₹):</th>
+                    <th colspan="1">{{ total_amount }}</th>
+                </tr>
+            </tfoot>
         </table>
-        <div class="invoice-total">
-            <p>Total Amount: {{ total_amount }}</p>
-        </div>
         <div class="invoice-footer">
             <p>Thank you for your purchase!</p>
         </div>
     </div>
-    <button class="btn btn-primary" onclick="printReceipt()">Print</button>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-center my-2">
+        <button class="btn btn-success" onclick="printReceipt()">Print</button>
+    </div>
 </div>
 
 {% endblock %}

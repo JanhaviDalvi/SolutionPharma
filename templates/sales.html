@@ -26,7 +26,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="row my-3">
+			<div class="row mt-3">
 				<div class="col-md-4">
 					<div class="form-group">
 						<label for="productName" class="mr-2">Product Name:</label>
@@ -38,7 +38,7 @@
 						</select>
 					</div>
 				</div>
-				<div class="col-md-2">
+				<div class="col-md-4">
 					<div class="form-group">
 						<label for="productQuantity" class="mr-2">Product Quantity:</label>
 						<input type="number" class="form-control" id="productQuantity" min="1" step="1" value="1"
@@ -46,15 +46,23 @@
 					</div>
 				</div>
 				<div class="col-md-4">
+					<button type="button" class="btn btn-primary mt-4" onclick="addMedicine()">Add</button>
+				</div>
+			</div>
+			<div class="row my-3">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label for="amountPaid" class="mr-2">Amount Paid:</label>
+						<input type="number" class="form-control" id="amount_paid" name="amount_paid" step="any" placeholder="Enter amount paid">
+					</div>
+				</div>
+				<div class="col-md-6">
 					<select class="form-select mt-4" aria-label="payment select" name="payment_method">
 						<option selected disabled>Select payment method</option>
 						<option value="UPI">UPI</option>
 						<option value="Credit/Debit card">Credit/Debit card</option>
 						<option value="Cash">Cash</option>
 					</select>
-				</div>
-				<div class="col-md-2">
-					<button type="button" class="btn btn-primary mt-4" onclick="addMedicine()">Add</button>
 				</div>
 			</div>
 		
@@ -80,7 +88,9 @@
 					</tr>
 				</tfoot>
 			</table>
-			<button type="submit" class="btn btn-sm btn-success btn-success">Confirm</button>
+			<div class="d-grid gap-2 d-md-flex justify-content-md-start">
+				<button type="submit" class="btn btn-success btn-success mt-2">Confirm Payment</button>
+			</div>
 		</form>
 	</div>
 </div>

@@ -26,15 +26,22 @@ login_manager.login_message_category = 'info'
 client = MongoClient(mongodb_uri)
 db = client['pharmacy_db']
 
-def insert_customer(customer_name, customer_phone):
+def insert_customer(customer_name, customer_phone, due_amount):
 	# Check if customer with the given phone number already exists
 	existing_customer = db.customer.find_one({"customer_phone": customer_phone})
 	if not existing_customer:
 		customer = {
 			"customer_name": customer_name,
-			"customer_phone": customer_phone
+			"customer_phone": customer_phone,
+			"due_amount": due_amount
 		}
 		db.customer.insert_one(customer)
+	# customer exits
+	else:
+		db.customer.update_one(
+            {"customer_phone": customer_phone},
+            {"$inc": {"due_amount": due_amount}}
+        )
 	customer_id = db.customer.find_one({"customer_phone": customer_phone})['_id']
 	return customer_id
 
@@ -105,6 +112,8 @@ def billing():
 	customer_name = request.form.get("customer_name")
 	customer_phone = request.form.get("customer_phone")
 	total_amount = request.form.get("total_amount")
+	amount_paid = request.form.get("amount_paid")
+	due_amount = round((float(total_amount) - float(amount_paid)), 2)
 	payment_method = request.form.get("payment_method")
 	billing_date = datetime.now()
 	for name, quantity, price, total_cost in zip(medicine_names, medicine_quantities, medicine_prices, medicine_total_costs):
@@ -115,7 +124,7 @@ def billing():
 			'medicine_total_cost': total_cost
 		}
 		medicines.append(medicine)
-	customer_id = insert_customer(customer_name, customer_phone)
+	customer_id = insert_customer(customer_name, customer_phone, due_amount)
 	sale = {
 		'medicines': medicines,
 		'total_amount': total_amount,
@@ -124,7 +133,7 @@ def billing():
 		'customer_id': customer_id
 	}
 	db.sales.insert_one(sale)
-	return render_template('billing.html', medicines=medicines, customer_name=customer_name, total_amount=total_amount, payment_method=payment_method, billing_date=billing_date)
+	return render_template('billing.html', medicines=medicines, customer_name=customer_name, total_amount=total_amount, payment_method=payment_method, billing_date=billing_date, amount_paid=amount_paid)
 
 @app.route('/add_medicine', methods=["POST", "GET"])
 @login_required

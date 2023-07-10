@@ -10,6 +10,7 @@ function calculateTotalCost() {
     var total = 0;
     var totalCostElements = document.querySelectorAll('#medicine-table-body td:nth-child(4)');
     var total_hidden = document.getElementById("total_amount");
+    var amount_paid = document.getElementById("amount_paid");
 
     totalCostElements.forEach(function (element) {
         var cost = parseFloat(element.textContent);
@@ -20,6 +21,7 @@ function calculateTotalCost() {
 
     var totalCostElement = document.getElementById('total-cost');
     totalCostElement.textContent = total.toFixed(2);
+    amount_paid.value = amount_paid.max = total.toFixed(2);
     total_hidden.setAttribute("value", totalCostElement.textContent);
 }
 
