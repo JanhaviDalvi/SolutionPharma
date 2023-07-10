@@ -5,19 +5,16 @@
     width: 80%;
     margin: 0 auto;
 }
-
 .invoice-header {
     text-align: center;
     margin-bottom: 20px;
 }
-
 .invoice-info {
     display: flex;
     justify-content: space-between;
     font-size: 14px;
     margin-top: 10px;
 }
-
 .invoice-details {
     display: flex;
     justify-content: space-between;

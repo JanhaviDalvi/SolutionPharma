@@ -73,3 +73,19 @@ function printReceipt() {
     window.print();
     document.body.innerHTML = originalContents;
 }
+
+// for 'sales_report.html'
+document.getElementById('reportType').addEventListener('change', function() {
+    var selectedOption = this.value;
+
+    var dateInput = document.getElementById('dateInput');
+    var companyInput = document.getElementById('companyInput');
+
+    if (selectedOption === 'billing_date') {
+        dateInput.style.display = 'block';
+        companyInput.style.display = 'none';
+    } else if (selectedOption === 'mdcn_company') {
+        dateInput.style.display = 'none';
+        companyInput.style.display = 'block';
+    }
+});

@@ -3,7 +3,7 @@ from pymongo import MongoClient
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required, UserMixin
 from bson import ObjectId
-from datetime import datetime
+from datetime import datetime, timedelta
 from dotenv import load_dotenv
 import os
 import re
@@ -152,6 +152,41 @@ def add_medicine():
 		
 	return render_template("add_medicine.html", current_datetime=current_datetime)
 
+
+@app.route('/sales_report', methods=['GET', 'POST'])
+@login_required
+def sales_report():
+	current_datetime = datetime.now()
+	results = [] 
+	if request.method == 'POST':
+		report_by = request.form.get("report_type")
+		value = request.form.get(report_by)
+		if report_by == "billing_date":
+			# Convert the value date string to a datetime object
+			selected_date = datetime.strptime(value, '%Y-%m-%d')
+			# Query the collection based on the selected date
+			res = db.sales.find({
+				'billing_date': {
+					'$gte': selected_date,
+					'$lt': selected_date + timedelta(days=1)
+				}
+			})
+			for i in res:
+				results.append(dict(i))
+
+		elif report_by == "mdcn_company":
+			medicines = db.medicines.find({'mdcn_company': value}, 	{'mdcn_name': 1})
+			for each_medicine in medicines:
+				sales = db.sales.find({'medicines.medicine_name': each_medicine["mdcn_name"]})
+				for i in sales:
+					results.append(i)
+
+	total_sale = round(sum(float(item['total_amount']) for item in results), 2)
+
+
+	return render_template('sales_report.html', current_datetime=current_datetime, results=results, total_sale=total_sale)
+
+
 @app.route("/register", methods=['GET', 'POST'])
 def register():
 	if current_user.is_authenticated:
@@ -172,6 +207,7 @@ def register():
 		flash(f"Account has been created for '{form.username.data}'!", "success")
 		return redirect(url_for('home'))
 	return render_template('register.html', form=form)
+
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():

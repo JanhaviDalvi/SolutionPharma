@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <h1>Stock Report</h1>
+
+    <h2>Date-wise Stock</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Stock Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for date, quantity in datewise_stock.items() %}
+                <tr>
+                    <td>{{ date }}</td>
+                    <td>{{ quantity }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Company-wise Sale</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Company</th>
+                <th>Quantity Sold</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for date, sales in companywise_sale.items() %}
+                {% for company, quantity in sales.items() %}
+                    <tr>
+                        <td>{{ date }}</td>
+                        <td>{{ company }}</td>
+                        <td>{{ quantity }}</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

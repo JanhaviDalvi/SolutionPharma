@@ -1,0 +1,83 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<!-- sidebar column here -->
+{% include 'sidebar.html' %}
+
+<!-- show content column here -->
+<div class="col py-3">
+	<!-- put content here -->
+	<div class="container p-4">
+		<h1>Sales Report</h1>
+		<form method="POST" action="{{ url_for('sales_report') }}">
+			<div class="row g-5">
+				<div class="col-md-6">
+					<div class="form-group mt-4">
+						<select class="form-control" id="reportType" name="report_type">
+							<option value="" disabled selected>Generate report by</option>
+							<option value="billing_date">By Date</option>
+							<option value="mdcn_company">By Company</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="col-md-6">
+					<div id="dateInput" style="display: none;">
+						<div class="form-group">
+							<label for="date">Select Date:</label>
+							<input type="date" class="form-control" id="date" name="billing_date"
+								max="{{ current_datetime.strftime('%Y-%m-%d') }}">
+						</div>
+					</div>
+					<div id="companyInput" style="display: none;">
+						<div class="form-group">
+							<label for="companyName">Enter Company Name:</label>
+							<input type="text" class="form-control" id="companyName" name="mdcn_company">
+						</div>
+					</div>
+				</div>
+			</div>
+			<button type="submit" class="btn btn-primary mt-3"><i class="bi bi-flag-fill"></i> Generate Report</button>
+		</form>
+
+		{% if results %}
+		<div class="mt-4">
+			<table class="table mx-5">
+				<thead>
+					<tr>
+						<th scope="col">Medicines</th>
+						<th scope="col">Amount</th>
+						<th scope="col">Billing Date</th>
+						<th scope="col">Payment Method</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for result in results %}
+					<tr>
+						<td>
+							{% for medicine in result.medicines %}
+							{{ medicine.medicine_name }} ({{ medicine.medicine_quantity }})<br>
+							{% endfor %}
+						</td>
+						<td>{{ result.total_amount }}</td>
+						<td>{{ result.billing_date.strftime("%d/%m/%Y %H:%M") }}</td>
+						<td>{{ result.payment_method }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="1" class="text-end fw-bold">Total Sale:</td>
+						<td colspan="3">{{ total_sale	}}</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+		{% else %}
+		<h3 class="mt-2">No records were found!</h3>
+		{% endif %}
+	</div>
+</div>
+
+{% endblock %}
