@@ -75,17 +75,39 @@ function printReceipt() {
 }
 
 // for 'sales_report.html'
-document.getElementById('reportType').addEventListener('change', function() {
-    var selectedOption = this.value;
+var element = document.getElementById('reportType');
+if(element){
+    element.addEventListener('change', function() {
+        var selectedOption = this.value;
 
-    var dateInput = document.getElementById('dateInput');
-    var companyInput = document.getElementById('companyInput');
+        var dateInput = document.getElementById('dateInput');
+        var companyInput = document.getElementById('companyInput');
 
-    if (selectedOption === 'billing_date') {
-        dateInput.style.display = 'block';
-        companyInput.style.display = 'none';
-    } else if (selectedOption === 'mdcn_company') {
-        dateInput.style.display = 'none';
-        companyInput.style.display = 'block';
-    }
-});
+        if (selectedOption === 'billing_date') {
+            dateInput.style.display = 'block';
+            companyInput.style.display = 'none';
+        } else if (selectedOption === 'mdcn_company') {
+            dateInput.style.display = 'none';
+            companyInput.style.display = 'block';
+        }
+    });
+}
+
+// for 'stock_report.html'
+var element = document.getElementById('stock_report_type');
+if(element){
+    element.addEventListener('change', function() {
+        var selectedOption = this.value;
+
+        var medicineInput = document.getElementById('stock_medicines');
+        var companyInput = document.getElementById('stock_company');
+
+        if (selectedOption === 'medicine') {
+            medicineInput.style.display = 'block';
+            companyInput.style.display = 'none';
+        } else if (selectedOption === 'company') {
+            medicineInput.style.display = 'none';
+            companyInput.style.display = 'block';
+        }
+    });
+}

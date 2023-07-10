@@ -153,6 +153,24 @@ def add_medicine():
 	return render_template("add_medicine.html", current_datetime=current_datetime)
 
 
+@app.route('/stock_report', methods=['GET', 'POST'])
+@login_required
+def stock_report():
+	medicines = db.medicines.distinct("mdcn_name")
+	companies = db.medicines.distinct("mdcn_company") 
+	result = columns = None
+	if request.method == "POST":
+		report_by = request.form.get("stock_report_type")
+		value = request.form.get(report_by)
+		if report_by == 'company':
+			result = db.medicines.find({'mdcn_company': value}, {'_id': 0, 'mdcn_company': 0})
+			columns = result[0].keys()
+		elif report_by == 'medicine':
+			result = db.medicines.find({'mdcn_name': value}, {'_id': 0, 'mdcn_name': 0})
+			columns = result[0].keys()
+
+	return render_template('stock_report.html', medicines=medicines, companies=companies, result=result, columns=columns)
+
 @app.route('/sales_report', methods=['GET', 'POST'])
 @login_required
 def sales_report():
@@ -182,7 +200,6 @@ def sales_report():
 					results.append(i)
 
 	total_sale = round(sum(float(item['total_amount']) for item in results), 2)
-
 
 	return render_template('sales_report.html', current_datetime=current_datetime, results=results, total_sale=total_sale)
 

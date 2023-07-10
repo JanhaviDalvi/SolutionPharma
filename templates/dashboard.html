@@ -5,38 +5,38 @@
 {% include 'sidebar.html' %}
 <!-- show content column here -->
 <div class="col py-3">
-    <!-- HTML code for the dashboard -->
-    <div class="container">
-        <h1>Medicine Dashboard</h1>
+	<!-- HTML code for the dashboard -->
+	<div class="container">
+		<h1>Medicine Dashboard</h1>
 
-        <!-- Search bar -->
-        <form action="{{ url_for('search_medicine') }}" method="post">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" name="searchMedicine" placeholder="Search Medicine" autofocus>
-                <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
-            </div>
-        </form>
-        
-        <table class="table">
-            <thead>
-              <tr>
-                <th>Medicine Name</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Manufacturer</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for medicine in medicines %}
-              <tr>
-                <td>{{ medicine.mdcn_name }}</td>
-                <td>{{ medicine.stock_count }}</td>
-                <td>{{ medicine.mdcn_price }}</td>
-                <td>{{ medicine.mdcn_company }}</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-    </div>
+		<!-- Search bar -->
+		<form action="{{ url_for('search_medicine') }}" method="post">
+			<div class="input-group mb-3">
+				<input type="text" class="form-control" name="searchMedicine" placeholder="Search Medicine" autofocus>
+				<button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
+			</div>
+		</form>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Medicine Name</th>
+					<th>Quantity</th>
+					<th>Price</th>
+					<th>Manufacturer</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for medicine in medicines %}
+				<tr>
+					<td>{{ medicine.mdcn_name }}</td>
+					<td>{{ medicine.stock_count }}</td>
+					<td>{{ medicine.mdcn_price }}</td>
+					<td>{{ medicine.mdcn_company }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
 </div>
 {% endblock %}

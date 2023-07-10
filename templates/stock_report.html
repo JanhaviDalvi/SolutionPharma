@@ -1,45 +1,77 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-    <h1>Stock Report</h1>
 
-    <h2>Date-wise Stock</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Stock Quantity</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for date, quantity in datewise_stock.items() %}
-                <tr>
-                    <td>{{ date }}</td>
-                    <td>{{ quantity }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<!-- sidebar column here -->
+{% include 'sidebar.html' %}
 
-    <h2>Company-wise Sale</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Company</th>
-                <th>Quantity Sold</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for date, sales in companywise_sale.items() %}
-                {% for company, quantity in sales.items() %}
-                    <tr>
-                        <td>{{ date }}</td>
-                        <td>{{ company }}</td>
-                        <td>{{ quantity }}</td>
-                    </tr>
-                {% endfor %}
-            {% endfor %}
-        </tbody>
-    </table>
+<!-- show content column here -->
+<div class="col py-3">
+	<!-- put content here -->
+	<div class="container">
+		<h1>Stock Report</h1>
+		<form method="POST" action="{{ url_for('stock_report') }}">
+			<div class="row g-3 mt-2">
+				<div class="col-md-6">
+					<div class="form-group">
+						<select class="form-control" id="stock_report_type" name="stock_report_type">
+							<option value="" disabled selected>Stock report by</option>
+							<option value="company">Company Name</option>
+							<option value="medicine">Medicine Name</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div id="stock_company" style="display: none;">
+						<div class="form-group">
+							<select class="form-control" name="company">
+								<option value="" disabled selected>Select company name</option>
+								{% for company in companies %}
+								<option value="{{ company }}">{{ company }}</option>
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+					<div id="stock_medicines" style="display: none;">
+						<div class="form-group">
+							<select class="form-control" name="medicine">
+								<option value="" disabled selected>Select medicine name</option>
+								{% for medicine in medicines %}
+								<option value="{{ medicine }}">{{ medicine }}</option>
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<button type="submit" class="btn btn-primary mt-3">Generate Report</button>
+		</form>
+
+		{% if result %}
+		<div class="mt-4">
+			<table class="table mx-2">
+				<thead>
+					<tr>
+						{% for column in columns %}
+						<th scope="col">{{ column }}</th>
+						{% endfor %}
+					</tr>
+				</thead>
+				<tbody>
+					{% for item in result %}
+					<tr>
+						{% for column in columns %}
+						<td>{{ item[column] }}</td>
+						{% endfor %}
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		{% else %}
+		<h3 class="mt-2">No records were found!</h3>
+		{% endif %}
+	</div>
+</div>
+
 {% endblock %}
