@@ -8,7 +8,7 @@
 <!-- show content column here -->
 <div class="col py-3">
 	<!-- put content here -->
-	<div class="container">
+	<div class="container p-4">
 		<h1>Stock Report</h1>
 		<form method="POST" action="{{ url_for('stock_report') }}">
 			<div class="row g-3 mt-2">
@@ -44,7 +44,7 @@
 					</div>
 				</div>
 			</div>
-			<button type="submit" class="btn btn-primary mt-3">Generate Report</button>
+			<button type="submit" class="btn btn-primary mt-3"><i class="bi bi-flag-fill"></i> Generate Report</button>
 		</form>
 
 		{% if result %}

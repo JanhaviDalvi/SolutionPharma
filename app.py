@@ -72,7 +72,12 @@ def home():
 def search_medicine():
 	search_term = request.form.get('searchMedicine')
 	regex_pattern = re.compile(f".*{search_term}.*", re.IGNORECASE)
-	query = {'mdcn_name': regex_pattern}
+	query = {
+        '$or': [
+            {'mdcn_name': regex_pattern},
+            {'mdcn_description': regex_pattern}
+        ]
+    }
 	results = db.medicines.find(query)
 	results = list(results)
 	return render_template('dashboard.html', medicines=results)

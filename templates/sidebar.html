@@ -2,33 +2,38 @@
 <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0" style="background-color: #404258;">
     <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
         <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-            <i class="bi bi-list"></i>  <span class="ms-1 fs-5 d-none d-sm-inline">Menu</span>
+            <i class="bi bi-heart-pulse" style="font-size: 2rem;"></i>  <span class="ms-1 fs-4 d-none d-sm-inline">SolutionPharma</span>
         </a>
         <!-- sidebar options start here -->
         <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-            <li class="nav-item">
+            <li class="nav-item mb-2">
                 <a href="{{ url_for('home') }}" class="nav-link align-middle px-0 text-white">
                     <i class="bi bi-laptop"></i> <span class="ms-1 d-none d-sm-inline">Dashboard</span>  
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item mb-2">
                 <a href="{{ url_for('sales') }}" class="nav-link px-0 align-middle text-white">
                 <i class="bi bi-currency-rupee"></i> <span class="ms-1 d-none d-sm-inline">Sales</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item mb-2">
                 <a href="{{ url_for('add_medicine') }}" class="nav-link px-0 align-middle text-white">
                     <i class="bi bi-capsule"></i> <span class="ms-1 d-none d-sm-inline">Add Medicine</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item mb-2">
                 <a href="{{ url_for('stock_report') }}" class="nav-link px-0 align-middle text-white">
                     <i class="bi bi-box-seam"></i> <span class="ms-1 d-none d-sm-inline">Stock Report</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item mb-2">
                 <a href="{{ url_for('sales_report') }}" class="nav-link px-0 align-middle text-white">
                     <i class="bi bi-graph-up-arrow"></i> <span class="ms-1 d-none d-sm-inline">Sales Report</span>
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a href="{{ url_for('logout') }}" class="nav-link px-0 align-middle text-white">
+                    <i class="bi bi-box-arrow-right"></i> <span class="ms-1 d-none d-sm-inline">Logout</span>
                 </a>
             </li>
         </ul>

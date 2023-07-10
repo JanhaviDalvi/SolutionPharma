@@ -6,8 +6,8 @@
 <!-- show content column here -->
 <div class="col py-3">
 	<!-- HTML code for the dashboard -->
-	<div class="container">
-		<h1>Medicine Dashboard</h1>
+	<div class="container p-4">
+		<h1 class="mb-4">Medicine Dashboard</h1>
 
 		<!-- Search bar -->
 		<form action="{{ url_for('search_medicine') }}" method="post">
@@ -20,19 +20,23 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th>Medicine Name</th>
-					<th>Quantity</th>
-					<th>Price</th>
+					<th>Name</th>
+					<th>Type</th>
+					<th>Description</th>
 					<th>Manufacturer</th>
+					<th>Stock</th>
+					<th>Price</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for medicine in medicines %}
 				<tr>
 					<td>{{ medicine.mdcn_name }}</td>
+					<td>{{ medicine.mdcn_type }}</td>
+					<td>{{ medicine.mdcn_description }}</td>
+					<td>{{ medicine.mdcn_company }}</td>
 					<td>{{ medicine.stock_count }}</td>
 					<td>{{ medicine.mdcn_price }}</td>
-					<td>{{ medicine.mdcn_company }}</td>
 				</tr>
 				{% endfor %}
 			</tbody>
