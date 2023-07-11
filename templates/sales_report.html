@@ -31,9 +31,13 @@
 						</div>
 					</div>
 					<div id="companyInput" style="display: none;">
-						<div class="form-group">
-							<label for="companyName">Enter Company Name:</label>
-							<input type="text" class="form-control" id="companyName" name="mdcn_company">
+						<div class="form-group mt-4">
+							<select class="form-control" name="mdcn_company">
+								<option value="" disabled selected>Select company name</option>
+								{% for company in companies %}
+								<option value="{{company}}">{{ company }}</option>
+								{% endfor %}
+							</select>
 						</div>
 					</div>
 				</div>

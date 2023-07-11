@@ -189,6 +189,7 @@ def stock_report():
 @login_required
 def sales_report():
 	current_datetime = datetime.now()
+	companies = db.medicines.distinct("mdcn_company") 
 	results = [] 
 	if request.method == 'POST':
 		report_by = request.form.get("report_type")
@@ -212,10 +213,48 @@ def sales_report():
 				sales = db.sales.find({'medicines.medicine_name': each_medicine["mdcn_name"]})
 				for i in sales:
 					results.append(i)
-
+			print(results)
 	total_sale = round(sum(float(item['total_amount']) for item in results), 2)
 
-	return render_template('sales_report.html', current_datetime=current_datetime, results=results, total_sale=total_sale)
+	return render_template('sales_report.html', current_datetime=current_datetime, results=results, total_sale=total_sale, companies=companies)
+
+
+@app.route("/customers", methods=['GET', 'POST'])
+def customers():
+	customers = db.customer.find({})
+	clear_due_btn = False
+	if request.method == "POST":
+		# Show searched customers
+		if 'showDues' not in request.form:
+			search_term = request.form.get('searchCustomer')
+			regex_pattern = re.compile(f".*{search_term}.*", re.IGNORECASE)
+			query = {
+				'$or': [
+					{'customer_name': regex_pattern},
+					{'customer_phone': regex_pattern}
+				]
+			}
+			customers = db.customer.find(query)	
+		# Show customers with dues
+		else:
+			customers = db.customer.find({"due_amount": {"$ne": 0}})
+			clear_due_btn = True
+
+	return render_template("customers.html", customers=customers, clear_due_btn=clear_due_btn)
+
+@app.route('/clear_due/<customer_id>', methods=['POST'])
+@login_required
+def clear_due(customer_id):
+    # Retrieve the customer from the database
+    customer = db.customer.find_one({"_id": ObjectId(customer_id)})
+    if customer:
+        # Clear the due amount for the customer
+        db.customer.update_one({"_id": ObjectId(customer_id)}, {"$set": {"due_amount": 0}})
+        flash("Due amount cleared successfully.", "success")
+    else:
+        flash("Customer not found.", "danger")
+
+    return redirect(url_for('customers'))
 
 
 @app.route("/register", methods=['GET', 'POST'])

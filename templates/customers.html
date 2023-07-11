@@ -1,0 +1,53 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<!-- sidebar column here -->
+{% include 'sidebar.html' %}
+
+<!-- show content column here -->
+<div class="col py-3">
+	<!-- put content here -->
+	<div class="container p-4">
+		<!-- Search bar -->
+		<form action="{{ url_for('customers') }}" method="post">
+			<div class="input-group mb-3">
+				<input type="text" class="form-control" name="searchCustomer" placeholder="Search Customer" autofocus>
+				<button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
+				<button type="submit" class="btn btn-danger mx-4" name="showDues">Show Dues</button>	
+			</div>
+		</form>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Phone number</th>
+					<th>Due amounts</th>
+					{% if clear_due_btn %}
+						<th>Action</th>
+					{% endif %}
+				</tr>
+			</thead>
+			<tbody>
+				{% for customer in customers %}
+				<tr>
+					<td>{{ customer.customer_name }}</td>
+					<td>{{ customer.customer_phone }}</td>
+					<td>{{ customer.due_amount }}</td>
+					{% if clear_due_btn %}
+						<td>
+							<form action="{{ url_for('clear_due', customer_id=customer._id) }}" method="post">
+								<button type="submit" class="btn btn-success" title="Clear Due">Clear Dues <i class="bi bi-check2-circle"></i></button>
+							</form>
+						</td>
+					{% endif %}
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+	</div>
+</div>
+
+{% endblock %}
