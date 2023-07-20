@@ -39,9 +39,9 @@ def insert_customer(customer_name, customer_phone, due_amount):
 	# customer exits
 	else:
 		db.customer.update_one(
-            {"customer_phone": customer_phone},
-            {"$inc": {"due_amount": due_amount}}
-        )
+			{"customer_phone": customer_phone},
+			{"$inc": {"due_amount": due_amount}}
+		)
 	customer_id = db.customer.find_one({"customer_phone": customer_phone})['_id']
 	return customer_id
 
@@ -67,27 +67,58 @@ def load_user(user_id):
 @app.route('/')
 @login_required
 def home():
-	cursor = db.medicines.find({})
-	medicines = list(cursor)
-	print(len(medicines))
-	for i in medicines:
-		print(i)
-	return render_template('dashboard.html', medicines=medicines)
+	# Calculate the start and end of today
+	start_of_today = datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
+	end_of_today = start_of_today + timedelta(days=1)
+	# MongoDB aggregation pipeline to get the sum of total_amount and count of sales for today
+	pipeline = [
+		{
+			"$match": {
+				"billing_date": {
+					"$gte": start_of_today,
+					"$lt": end_of_today
+				}
+			}
+		},
+		{
+			"$group": {
+				"_id": None,
+				"total_amount_today": {
+					"$sum": { "$toDouble": "$total_amount" }
+				},
+				"number_of_sales_today": {
+					"$sum": 1
+				}
+			}
+		}
+	]
+	# Execute the aggregation pipeline
+	result = db.sales.aggregate(pipeline)
+	# Get the sum of total_amount and number of sales for today
+	data_today = result.next()
+	total_amount_today = data_today["total_amount_today"]
+	number_of_sales_today = data_today["number_of_sales_today"]
+	return render_template('dashboard.html', username=current_user.username, number_of_sales_today=number_of_sales_today, total_amount_today=total_amount_today)
 
-@app.route('/search_medicine', methods=["POST"])
+@app.route('/search_medicine', methods=["POST", "GET"])
 @login_required
 def search_medicine():
-	search_term = request.form.get('searchMedicine')
-	regex_pattern = re.compile(f".*{search_term}.*", re.IGNORECASE)
-	query = {
-        '$or': [
-            {'mdcn_name': regex_pattern},
-            {'mdcn_description': regex_pattern}
-        ]
-    }
-	results = db.medicines.find(query)
-	results = list(results)
-	return render_template('dashboard.html', medicines=results)
+	if request.method == 'POST':
+		search_term = request.form.get('searchMedicine')
+		regex_pattern = re.compile(f".*{search_term}.*", re.IGNORECASE)
+		query = {
+			'$or': [
+				{'mdcn_name': regex_pattern},
+				{'mdcn_description': regex_pattern}
+			]
+		}
+		results = db.medicines.find(query)
+		results = list(results)
+		return render_template('search_medicine.html', medicines=results)
+	else:
+		cursor = db.medicines.find({})
+		medicines = list(cursor)
+		return render_template('search_medicine.html', medicines=medicines)
 
 
 @app.route('/sales')
@@ -195,13 +226,16 @@ def sales_report():
 		report_by = request.form.get("report_type")
 		value = request.form.get(report_by)
 		if report_by == "billing_date":
-			# Convert the value date string to a datetime object
-			selected_date = datetime.strptime(value, '%Y-%m-%d')
-			# Query the collection based on the selected date
+			# # Convert the value date string to a datetime object
+			start_date = datetime.strptime(request.form.get('start_date'), '%Y-%m-%d').date()
+			end_date = datetime.strptime(request.form.get('end_date'), '%Y-%m-%d').date()
+			start_datetime = datetime.combine(start_date, datetime.min.time())
+			end_datetime = datetime.combine(end_date, datetime.max.time())
+			# Query the collection based on the selected dates
 			res = db.sales.find({
 				'billing_date': {
-					'$gte': selected_date,
-					'$lt': selected_date + timedelta(days=1)
+					'$gte': start_datetime,
+					'$lte': end_datetime
 				}
 			})
 			for i in res:
@@ -214,6 +248,7 @@ def sales_report():
 				for i in sales:
 					results.append(i)
 			print(results)
+	print(results)	
 	total_sale = round(sum(float(item['total_amount']) for item in results), 2)
 
 	return render_template('sales_report.html', current_datetime=current_datetime, results=results, total_sale=total_sale, companies=companies)
@@ -245,16 +280,16 @@ def customers():
 @app.route('/clear_due/<customer_id>', methods=['POST'])
 @login_required
 def clear_due(customer_id):
-    # Retrieve the customer from the database
-    customer = db.customer.find_one({"_id": ObjectId(customer_id)})
-    if customer:
-        # Clear the due amount for the customer
-        db.customer.update_one({"_id": ObjectId(customer_id)}, {"$set": {"due_amount": 0}})
-        flash("Due amount cleared successfully.", "success")
-    else:
-        flash("Customer not found.", "danger")
+	# Retrieve the customer from the database
+	customer = db.customer.find_one({"_id": ObjectId(customer_id)})
+	if customer:
+		# Clear the due amount for the customer
+		db.customer.update_one({"_id": ObjectId(customer_id)}, {"$set": {"due_amount": 0}})
+		flash("Due amount cleared successfully.", "success")
+	else:
+		flash("Customer not found.", "danger")
 
-    return redirect(url_for('customers'))
+	return redirect(url_for('customers'))
 
 
 @app.route("/register", methods=['GET', 'POST'])

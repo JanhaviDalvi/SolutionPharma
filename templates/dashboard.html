@@ -1,46 +1,97 @@
 {% extends 'layout.html' %}
 
-{% block content %}
-<!-- sidebar column here -->
-{% include 'sidebar.html' %}
-<!-- show content column here -->
-<div class="col py-3">
-	<!-- HTML code for the dashboard -->
-	<div class="container p-4">
-		<h1 class="mb-4">Medicine Dashboard</h1>
+{% block navbar %}
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <!-- Brand name -->
+        <a class="navbar-brand p-2" href="/"><i class="bi bi-heart-pulse" style="font-size: 2rem;"></i>  <span class="ms-1 fs-4 d-none d-sm-inline">SolutionPharma</span></a>
 
-		<!-- Search bar -->
-		<form action="{{ url_for('search_medicine') }}" method="post">
-			<div class="input-group mb-3">
-				<input type="text" class="form-control" name="searchMedicine" placeholder="Search Medicine" autofocus>
-				<button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
-			</div>
-		</form>
+        <!-- Username dropdown -->
+        <div class="dropdown me-5">
+            <a style="text-decoration: none;" class="dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                {{username}}
+			</a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{{url_for('logout')}}">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{% endblock %}
 
-		<table class="table">
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Type</th>
-					<th>Description</th>
-					<th>Manufacturer</th>
-					<th>Stock</th>
-					<th>Price</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for medicine in medicines %}
-				<tr>
-					<td>{{ medicine.mdcn_name }}</td>
-					<td>{{ medicine.mdcn_type }}</td>
-					<td>{{ medicine.mdcn_description }}</td>
-					<td>{{ medicine.mdcn_company }}</td>
-					<td>{{ medicine.stock_count }}</td>
-					<td>{{ medicine.mdcn_price }}</td>
-				</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-	</div>
+{% block dashboard %}
+<div class="container mt-5">
+    <div class="row row-cols-md-3 g-4">
+        <!-- Navigation boxes -->
+        <div class="col">
+            <a href="{{ url_for('search_medicine') }}" class="card h-100" style="text-decoration: none;">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-search"></i> <span class="ms-1 d-none d-sm-inline">Search Medicine</span></h5>
+                    <p class="card-text">Search for a specific medicine based on keywords.</p>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+            <a href="{{ url_for('sales') }}" class="card h-100" style="text-decoration: none;">
+				<div class="card-body">
+					<h5 class="card-title"><i class="bi bi-currency-rupee"></i> <span class="ms-1 d-none d-sm-inline">Sales</span></h5>
+					<p class="card-text">Manage sales and billing operations.</p>
+				</div>
+			</a>			
+        </div>
+        <div class="col">
+            <a href="{{ url_for('add_medicine') }}" class="card h-100" style="text-decoration: none;">
+				<div class="card-body">
+					<h5 class="card-title"><i class="bi bi-capsule"></i> <span class="ms-1 d-none d-sm-inline">Add Medicine</span></h5>
+					<p class="card-text">Add new medicines to the database.</p>
+				</div>
+			</a>			
+        </div>
+    </div>
+	<div class="row row-cols-md-3 g-4 mt-4">
+        <!-- Navigation boxes -->
+        <div class="col">
+            <a href="{{ url_for('stock_report') }}" class="card h-100" style="text-decoration: none;">
+				<div class="card-body">
+					<h5 class="card-title"><i class="bi bi-box-seam"></i> <span class="ms-1 d-none d-sm-inline">Stock Report</span></h5>
+					<p class="card-text">Generate reports on available stock.</p>
+				</div>
+			</a>			
+        </div>
+        <div class="col">
+			<a href="{{ url_for('sales_report') }}" class="card h-100" style="text-decoration: none;">
+				<div class="card-body">
+					<h5 class="card-title"><i class="bi bi-graph-up-arrow"></i> <span class="ms-1 d-none d-sm-inline">Sales Report</span></h5>
+					<p class="card-text">View and generate sales reports.</p>
+				</div>
+			</a>					
+        </div>
+        <div class="col">
+            <a href="{{ url_for('customers') }}" class="card h-100" style="text-decoration: none;">
+				<div class="card-body">
+					<h5 class="card-title"><i class="bi bi-people-fill"></i> <span class="ms-1 d-none d-sm-inline">Customers</span></h5>
+					<p class="card-text">Manage customer information and due amounts.</p>
+				</div>
+			</a>					
+        </div>
+    </div>
+
+	<div class="row row-cols-md-3 g-4 mt-4">
+        <!-- Navigation boxes -->
+        <div class="col">
+            <div class="card h-100">
+				<div class="card-body">
+					<h5 class="card-title">Number to sales made today: {{number_of_sales_today}}</h5>
+				</div>
+			</div>			
+        </div>
+		<div class="col">
+            <div class="card h-100">
+				<div class="card-body">
+					<h5 class="card-title">Total sales today(₹): {{total_amount_today}}</h5>
+			</div>			
+        </div>
+    </div>
 </div>
 {% endblock %}

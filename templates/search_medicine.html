@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<!-- sidebar column here -->
+{% include 'sidebar.html' %}
+<!-- show content column here -->
+<div class="col py-3">
+	<!-- HTML code for the dashboard -->
+	<div class="container p-4">
+		<h1 class="mb-4">Medicine Dashboard</h1>
+
+		<!-- Search bar -->
+		<form action="{{ url_for('search_medicine') }}" method="post">
+			<div class="input-group mb-3">
+				<input type="text" class="form-control" name="searchMedicine" placeholder="Search Medicine" autofocus>
+				<button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
+			</div>
+		</form>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Type</th>
+					<th>Description</th>
+					<th>Manufacturer</th>
+					<th>Stock</th>
+					<th>Price</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for medicine in medicines %}
+				<tr>
+					<td>{{ medicine.mdcn_name }}</td>
+					<td>{{ medicine.mdcn_type }}</td>
+					<td>{{ medicine.mdcn_description }}</td>
+					<td>{{ medicine.mdcn_company }}</td>
+					<td>{{ medicine.stock_count }}</td>
+					<td>{{ medicine.mdcn_price }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+{% endblock %}

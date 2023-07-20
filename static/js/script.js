@@ -94,6 +94,22 @@ if(element){
         }
     });
 }
+// start and end dates 'sales_report.html'
+const startDateInput = document.getElementById('start_date');
+const endDateInput = document.getElementById('end_date');
+
+const today = new Date();
+const todayLocalISO = today.toISOString().split('T')[0];
+startDateInput.max = todayLocalISO;
+
+startDateInput.addEventListener('change', function () {
+    const selectedStartDate = new Date(this.value);
+    // Enable end date input and set the minimum and maximum values
+    endDateInput.disabled = false;
+    endDateInput.min = this.value;
+    endDateInput.max = todayLocalISO;
+});
+
 
 // for 'stock_report.html'
 var element = document.getElementById('stock_report_type');

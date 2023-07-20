@@ -12,6 +12,10 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
+	<!-- only dashboard will extend this -->
+	{% block navbar %}
+	{% endblock %}
+
 	<div class="container-fluid">
 		<!-- to get flashed messages -->
 		<div id="flash_div">
@@ -25,6 +29,10 @@
 				{% endif %}
 			{% endwith %}
 		</div>
+
+		<!-- only dashboard will extend this -->
+		{% block dashboard %}
+		{% endblock %}
 
         <div class="row">
             {% block content %}

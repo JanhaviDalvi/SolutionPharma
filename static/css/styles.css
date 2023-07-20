@@ -59,3 +59,14 @@
     text-align: center;
     color: #888;
 }
+
+/* for dashboard */
+.card {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.05); /* Hover effect: Slightly scale up the card */
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1); /* Shadow effect on hover */
+}
