@@ -81,34 +81,32 @@ var element = document.getElementById('reportType');
 if(element){
     element.addEventListener('change', function() {
         var selectedOption = this.value;
-
         var dateInput = document.getElementById('dateInput');
         var companyInput = document.getElementById('companyInput');
 
         if (selectedOption === 'billing_date') {
             dateInput.style.display = 'block';
             companyInput.style.display = 'none';
-        } else if (selectedOption === 'mdcn_company') {
+            // start and end dates 'sales_report.html'
+            const startDateInput = document.getElementById('start_date');
+            const endDateInput = document.getElementById('end_date');
+            const today = new Date();
+            const todayLocalISO = today.toISOString().split('T')[0];
+            startDateInput.max = todayLocalISO;
+            startDateInput.addEventListener('change', function () {
+                const selectedStartDate = new Date(this.value);
+                // Enable end date input and set the minimum and maximum values
+                endDateInput.disabled = false;
+                endDateInput.min = this.value;
+                endDateInput.max = todayLocalISO;
+            });
+        } 
+        else if (selectedOption === 'mdcn_company') {
             dateInput.style.display = 'none';
             companyInput.style.display = 'block';
         }
     });
 }
-// start and end dates 'sales_report.html'
-const startDateInput = document.getElementById('start_date');
-const endDateInput = document.getElementById('end_date');
-
-const today = new Date();
-const todayLocalISO = today.toISOString().split('T')[0];
-startDateInput.max = todayLocalISO;
-
-startDateInput.addEventListener('change', function () {
-    const selectedStartDate = new Date(this.value);
-    // Enable end date input and set the minimum and maximum values
-    endDateInput.disabled = false;
-    endDateInput.min = this.value;
-    endDateInput.max = todayLocalISO;
-});
 
 
 // for 'stock_report.html'

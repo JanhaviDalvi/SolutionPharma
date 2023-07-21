@@ -94,10 +94,15 @@ def home():
 	]
 	# Execute the aggregation pipeline
 	result = db.sales.aggregate(pipeline)
-	# Get the sum of total_amount and number of sales for today
-	data_today = result.next()
-	total_amount_today = data_today["total_amount_today"]
-	number_of_sales_today = data_today["number_of_sales_today"]
+	try:
+		# Get the sum of total_amount and number of sales for today
+		data_today = result.next()
+		total_amount_today = data_today["total_amount_today"]
+		number_of_sales_today = data_today["number_of_sales_today"]
+	except StopIteration:
+		# No data for today, set the values to 0
+		total_amount_today = 0
+		number_of_sales_today = 0
 	return render_template('dashboard.html', username=current_user.username, number_of_sales_today=number_of_sales_today, total_amount_today=total_amount_today)
 
 @app.route('/search_medicine', methods=["POST", "GET"])
@@ -154,6 +159,10 @@ def billing():
 			'medicine_price': price,
 			'medicine_total_cost': total_cost
 		}
+		# The query to update the stock_count field
+		query = {"mdcn_name": name}
+		update = {"$inc": {"stock_count": -int(quantity)}}
+		db.medicines.update_one(query, update)
 		medicines.append(medicine)
 	customer_id = insert_customer(customer_name, customer_phone, due_amount)
 	sale = {
@@ -242,12 +251,17 @@ def sales_report():
 				results.append(dict(i))
 
 		elif report_by == "mdcn_company":
+			print("in medicine company")
+			print(value)
 			medicines = db.medicines.find({'mdcn_company': value}, 	{'mdcn_name': 1})
+
 			for each_medicine in medicines:
+				print('medicine:', each_medicine)
 				sales = db.sales.find({'medicines.medicine_name': each_medicine["mdcn_name"]})
 				for i in sales:
+					print(i)
 					results.append(i)
-			print(results)
+			print("results:", results)
 	print(results)	
 	total_sale = round(sum(float(item['total_amount']) for item in results), 2)
 
